@@ -62,16 +62,6 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="The z acceleration is: "
-        android:id="@+id/z_coordinateTitle"
-        android:layout_below="@id/y_coordinateTitle"
-        android:layout_gravity="center_vertical"
-        android:textColor="@android:color/black"
-        android:layout_marginTop="15dp"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:id="@+id/z_coordinate"
         android:layout_below="@id/y_coordinateTitle"
         android:layout_toRightOf="@+id/z_coordinateTitle"
@@ -128,4 +118,23 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="32dp"
         android:id="@+id/button3" />
+
+    <TextView
+        android:text="Coordinates"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="41dp"
+        android:id="@+id/location"
+        android:layout_above="@+id/button"
+        android:layout_toEndOf="@+id/y_coordinateTitle" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="The z acceleration is: "
+        android:id="@+id/z_coordinateTitle"
+        android:layout_gravity="center_vertical"
+        android:textColor="@android:color/black"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>
