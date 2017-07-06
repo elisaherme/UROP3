@@ -124,7 +124,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="41dp"
-        android:id="@+id/location"
+        android:id="@+id/GPSlocation"
         android:layout_above="@+id/button"
         android:layout_toEndOf="@+id/y_coordinateTitle" />
 

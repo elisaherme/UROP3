@@ -34,13 +34,16 @@ public class MainActivity extends AppCompatActivity {
     private LocationManager locationManager;
     private LocationListener listener;
 
+    String longitude;
+    String latitude;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
 
-        coordinates = (TextView) findViewById(R.id.location);
+        coordinates = (TextView) findViewById(R.id.GPSlocation);
         btnShowLocation = (Button) findViewById(R.id.button3);
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -49,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
         listener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
+                longitude = Double.toString(location.getLongitude());
+                latitude = Double.toString(location.getLatitude());
                 coordinates.append("\n " + location.getLongitude() + " " + location.getLatitude());
             }
 
