@@ -1,17 +1,23 @@
 package com.example.elisa.urop3;
 
+import android.Manifest;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.telephony.SmsManager;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -20,6 +26,8 @@ import java.io.IOException;
 import static android.content.ContentValues.TAG;
 
 public class MyService extends Service {
+
+    private static final int MY_PERMISSIONS_REQUEST_SEND_SMS = 0;
 
     private SensorManager senSensorManager;
     private Sensor senAccelerometer;
@@ -86,6 +94,7 @@ public class MyService extends Service {
 
                             String acc = String.valueOf(acceleration);
                             Log.d(TAG, acc);
+                            Toast.makeText(getApplicationContext(), acc, Toast.LENGTH_LONG).show();
                             last_x = x;
                             last_y = y;
                             last_z = z;
@@ -184,6 +193,8 @@ public class MyService extends Service {
 
     }
 
+
+
     @Override
     public void onDestroy(){
         Toast.makeText(this, "MyService destroyed ", Toast.LENGTH_LONG).show();
@@ -196,4 +207,5 @@ public class MyService extends Service {
         // throw new UnsupportedOperationException("Not yet implemented");#
         return null;
     }
+
 }

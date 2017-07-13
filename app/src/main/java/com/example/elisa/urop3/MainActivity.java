@@ -9,6 +9,7 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Intent;
@@ -17,9 +18,11 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorManager;
 import android.content.Context;
+import android.telephony.SmsManager;
 import android.test.mock.MockPackageManager;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -27,7 +30,10 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final int MY_PERMISSIONS_REQUEST_SEND_SMS = 0;
+
     Button btnShowLocation;
+    Button sendlocation;
     private TextView coordinates;
     private static final int REQUEST_CODE_PERMISSION = 2;
     String mPermission = Manifest.permission.ACCESS_FINE_LOCATION;
@@ -36,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
 
     String longitude;
     String latitude;
+
+    EditText txtphoneNo;
+    String phoneNo;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,6 +55,10 @@ public class MainActivity extends AppCompatActivity {
         coordinates = (TextView) findViewById(R.id.GPSlocation);
         btnShowLocation = (Button) findViewById(R.id.button3);
 
+        txtphoneNo = (EditText) findViewById(R.id.phone1);
+        btnShowLocation = (Button) findViewById(R.id.button4);
+        sendlocation = (Button) findViewById(R.id.button3);
+
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
 
@@ -55,6 +68,8 @@ public class MainActivity extends AppCompatActivity {
                 longitude = Double.toString(location.getLongitude());
                 latitude = Double.toString(location.getLatitude());
                 coordinates.append("\n " + location.getLongitude() + " " + location.getLatitude());
+                //Toast.makeText(this, longitude , Toast.LENGTH_LONG).show();
+
             }
 
             @Override
@@ -76,6 +91,12 @@ public class MainActivity extends AppCompatActivity {
         };
 
         configure_button();
+
+        sendlocation.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                sendSMSMessage();
+            }
+        });
     }
 
     @Override
@@ -87,6 +108,18 @@ public class MainActivity extends AppCompatActivity {
                 break;
             default:
                 break;
+            case MY_PERMISSIONS_REQUEST_SEND_SMS: {
+                Toast.makeText(getApplicationContext(), "Sending SMS!.", Toast.LENGTH_LONG).show();
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    SmsManager smsManager = SmsManager.getDefault();
+                    smsManager.sendTextMessage(phoneNo, null, "My location is: longitude = " + longitude + " latitude = " + latitude, null, null);
+                    Toast.makeText(getApplicationContext(), "SMS sent", Toast.LENGTH_LONG).show();
+
+                } else {
+                    Toast.makeText(getApplicationContext(), "SMS failed, No permissions, please try again.", Toast.LENGTH_LONG).show();
+                    return;
+                }
+            }
         }
     }
 
@@ -110,6 +143,32 @@ public class MainActivity extends AppCompatActivity {
                 locationManager.requestLocationUpdates("gps", 5000, 0, listener);
             }
         });
+    }
+
+    protected void sendSMSMessage() {
+        phoneNo = txtphoneNo.getText().toString();
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) !=
+                PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.SEND_SMS)) {
+
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS}, MY_PERMISSIONS_REQUEST_SEND_SMS);
+            }
+        }
+        else {
+
+            try {
+                Toast.makeText(getApplicationContext(), "Sending SMS!.", Toast.LENGTH_LONG).show();
+                SmsManager smsManager = SmsManager.getDefault();
+                smsManager.sendTextMessage(phoneNo, null, "My location is: longitude = " + longitude + " latitude = " + latitude, null, null);
+                Toast.makeText(getApplicationContext(), "SMS sent", Toast.LENGTH_LONG).show();
+            }
+            catch ( Exception e){
+                Toast.makeText(getApplicationContext(), "SMS Failed!", Toast.LENGTH_LONG).show();
+                e.printStackTrace();
+            }
+        }
     }
 
     public void onClickStartService(View view){

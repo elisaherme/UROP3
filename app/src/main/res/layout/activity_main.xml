@@ -111,7 +111,7 @@
         android:layout_centerHorizontal="true" />
 
     <Button
-        android:text="Show Location"
+        android:text="Send location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/button2"
@@ -128,6 +128,15 @@
         android:layout_above="@+id/button"
         android:layout_toEndOf="@+id/y_coordinateTitle" />
 
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="phone"
+        android:ems="10"
+        android:layout_alignTop="@+id/z_coordinate"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/phone1" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -137,4 +146,12 @@
         android:textColor="@android:color/black"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
+
+    <Button
+        android:text="show location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button3"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/button4" />
 </RelativeLayout>
